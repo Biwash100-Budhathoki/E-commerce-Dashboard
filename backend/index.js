@@ -5,7 +5,7 @@ const app = express();
 const connectDB = async ()=>{
 mongoose.set('strictQuery', true);
 
-mongoose.connect('mongodb://localhost:27017/eCommerce');
+mongoose.connect('mongodb://localhost:8000/eCommerce');
     const productSchema = new mongoose.Schema({});
     const Product = mongoose.model('Product', productSchema);
     const data = await Product.find({});
