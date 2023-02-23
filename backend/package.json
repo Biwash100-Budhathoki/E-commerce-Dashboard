@@ -4,14 +4,15 @@
   "description": "understanding the basic web development using node js and react js",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon"
   },
   "author": "Biwash",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
     "mongodb": "^4.13.0",
-    "mongoose": "^6.9.0",
+    "mongoose": "^6.10.0",
     "nodemon": "^2.0.20"
   }
 }
