@@ -87,6 +87,19 @@ app.put("/product/:id", async(req,resp)=>{
  resp.send(result);
 });
 
+app.get("/search/:key", async(req,resp)=>{
+  let result = await Product.find({
+    "$or":[
+      {name:{$regex:req.params.key}},
+      {company:{$regex:req.params.key}},
+      {category:{$regex:req.params.key}}
+
+    ]  //name in collection is matched to key parameter passed in url
+  });
+  resp.send(result);
+
+})
+
 
 app.listen(5000, () => {
   console.log('Server is running on port 5000');
