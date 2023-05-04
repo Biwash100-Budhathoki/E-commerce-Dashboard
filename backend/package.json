@@ -12,12 +12,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.18.2",
-<<<<<<< HEAD
-    "jsonwebtoken": "^9.0.0",
-    "mongodb": "4.1",
-=======
     "mongodb": "^4.13.0",
->>>>>>> parent of 07f081b (upto jwt authentication)
     "mongoose": "^6.9.0",
     "nodemon": "^2.0.20"
   }
