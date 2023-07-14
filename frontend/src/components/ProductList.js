@@ -10,7 +10,11 @@ const ProductList =()=>{
     }, [])
 
     const getProducts = async () => {
-        let result = await fetch('http://127.0.0.1:5000/products');
+        let result = await fetch('http://127.0.0.1:5000/products',{
+            headers:{
+                authorization:JSON.parse(localStorage.getItem('token'))
+            }//sending token to backend or API
+        });
         result = await result.json();
         setProducts(result);
 
