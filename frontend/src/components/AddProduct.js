@@ -8,6 +8,7 @@ const AddProduct =()=>{
     const [price,setPrice]=React.useState('');
     const [category,setCategory]=React.useState('');
     const [company,setCompany]=React.useState('');
+    const [number,setNumber]=React.useState('');
     const [error,setError] = React.useState(false);
 
     const addProduct= async()=>{
@@ -20,11 +21,11 @@ const AddProduct =()=>{
         }
        const userId = new ObjectId(JSON.parse(localStorage.getItem('user'))._id);
     //    const userId = JSON.parse(localStorage.getItem('user'))._id;
-       console.log("Userid :" ,userId);
-       console.warn(name,price,category,company,userId);
+       //console.log("Userid :" ,userId);
+       //console.warn(name,price,category,company,userId);
        let result = await fetch("http://127.0.0.1:5000/add-product",{
             method:'post',
-            body:JSON.stringify({name,price,category,company,userId}),
+            body:JSON.stringify({name,price,category,company,number,userId}),
             headers:{
                 "Content-type":"application/json",
                 authorization:`bearer ${JSON.parse(localStorage.getItem('token'))}`
@@ -54,6 +55,11 @@ const AddProduct =()=>{
 
             <input type="text"  placeholder='Enter Product Company' className='inputBox'
             onChange={(e)=>{setCompany(e.target.value)}} value={company}/>
+                {error && !company && <span className='invalid-input'>Enter valid company</span>}
+
+
+                <input type="number"  placeholder='Enter No. of Products' className='inputBox'
+            onChange={(e)=>{setNumber(e.target.value)}} value={number}/>
                 {error && !company && <span className='invalid-input'>Enter valid company</span>}
 
 

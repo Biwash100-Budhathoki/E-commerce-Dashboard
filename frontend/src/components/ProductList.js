@@ -65,6 +65,7 @@ const ProductList =()=>{
                 <li>Name</li>
                 <li>Price</li>
                 <li>Category</li>
+                <li>No. of Products</li>
                 <li>Operation</li>
 
 
@@ -77,6 +78,7 @@ const ProductList =()=>{
                    <li>{item.name}</li>
                    <li>${item.price}</li>
                    <li>{item.category}</li>
+                   <li>{item.number}</li>
                    <li><button onClick={()=>deleteProduct(item._id)}>Delete</button>
                    <Link to={"/update/"+item._id}>Update</Link>
                    
