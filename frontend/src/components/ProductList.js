@@ -26,17 +26,16 @@ const ProductList = () => {
     calculateTotalAmount(updatedCartItems);
   };
 
-  const deleteProduct = async (id) => {
-    let result = await fetch(`http://127.0.0.1:5000/product/${id}`, {
-      method: 'Delete',
-      headers: {
-        authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`,
-      },
-    });
-    result = await result.json();
-    if (result) {
-      getProducts();
-    }
+  const removeFromCart = (itemIndex) => {
+    const updatedCartItems = [...cartItems];
+    updatedCartItems.splice(itemIndex, 1);
+    setCartItems(updatedCartItems);
+    calculateTotalAmount(updatedCartItems);
+  };
+
+  const clearCart = () => {
+    setCartItems([]);
+    setTotalAmount(0);
   };
 
   const calculateTotalAmount = (cartItems) => {
@@ -92,10 +91,8 @@ const ProductList = () => {
             <li>{item.number}</li>
             <li>
               <button onClick={() => addToCart(item)}>Add to Cart</button>
-              <button><Link to={`/update/${item._id}`}>Update</Link></button>
-              <button onClick={()=>deleteProduct(item._id)}>Delete</button>
+              <Link to={`/update/${item._id}`}>Update</Link>
             </li>
-            
           </ul>
         ))
       ) : (
@@ -107,12 +104,16 @@ const ProductList = () => {
         {cartItems.length > 0 ? (
           <ul>
             {cartItems.map((item, index) => (
-              <li key={index}>{item.name}</li>
+              <li key={index}>
+                {item.name}{' '}
+                <button onClick={() => removeFromCart(index)}>Remove</button>
+              </li>
             ))}
           </ul>
         ) : (
           <p>No items in the cart.</p>
         )}
+        <button onClick={clearCart}>Clear Cart</button>
       </div>
 
       <div className="total-amount">
