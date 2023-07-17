@@ -43,7 +43,7 @@
 }
 
 .product-list{
-  text-align: center;
+  text-align: left;
   margin-top: 50px;
 
 }
@@ -52,7 +52,7 @@
   display: inline-block;
   border: 1px solid skyblue;
   padding: 5px;
-  width: 150px;
+  width: 200px;
 }
 
 .product-list ul{
