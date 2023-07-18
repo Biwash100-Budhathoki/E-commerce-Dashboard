@@ -129,6 +129,32 @@ function verifyToken(req, resp, next) {
 
 };
   
+// Handle payment initiation
+app.post("/payment/initiate", async (req, res) => {
+  try {
+    // Perform necessary calculations and validations
+
+    // Make a request to eSewa to initiate the payment
+    const response = await axios.post(
+      "https://uat.esewa.com.np/epay/main",
+      {
+        amt: req.body.amount,
+        tAmt: req.body.amount,
+        pid: "TEST_PRODUCT",
+        scd: "EPAYTEST",
+        su: "http://localhost:5000/success",
+        fu: "http://localhost:5000/failure",
+      }
+    );
+
+    // Extract the redirect URL from the response and send it to the client
+    const redirectUrl = response.request.res.responseUrl;
+    res.json({ redirectUrl });
+  } catch (error) {
+    console.log("Error initiating payment:", error);
+    res.status(500).json({ error: "Payment initiation failed" });
+  }
+});
 
 
 app.listen(5000, () => {
