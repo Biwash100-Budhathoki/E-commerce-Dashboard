@@ -8,27 +8,37 @@ import Login from './components/Login';
 import AddProduct from './components/AddProduct';
 import ProductList from './components/ProductList';
 import UpdateProduct from './components/UpdateProduct';
+//import EsewaForm from './components/eSewaForm';
+import { useState } from 'react';
+import PaymentForm from "./components/eSewaForm";
+import SuccessPage from "./components/SuccessPage";
+import FailurePage from "./components/FailurePage";
 
 function App() {
+
+  const [showForm, setShowForm] = useState(false);
+
+  const handleClick = () => {
+    setShowForm(true);
+  };
   return (
     <div className="App">
       <BrowserRouter>
-      <Nav />
-      <Routes>
-        
-        <Route element = {<PrivateComponent />}>
-        <Route path='/' element={<ProductList />} />
-        <Route path='/add' element={<AddProduct />}/>
-        <Route path='/update/:id' element={<UpdateProduct />} />
-        <Route path='/logout' element={<h1>Logout Component</h1>} />
-        <Route path='/profile' element={<h1>Profile Component</h1>} />
-        </Route>
-
-        <Route path='/signup' element={<SignUp/>} />
-        <Route path='/login' element={<Login/>} />
-        
-
-      </Routes>
+        <Nav />
+        <Routes>
+          <Route path="/" element={<PrivateComponent />}>
+            <Route path="/" element={<ProductList />} />
+            <Route path="/add" element={<AddProduct />} />
+            <Route path="/update/:id" element={<UpdateProduct />} />
+            <Route path="/logout" element={<h1>Logout Component</h1>} />
+            <Route path="/profile" element={<h1>Profile Component</h1>} />
+            <Route path="/pay" element={<PaymentForm />} />
+            <Route path="/success" element={<SuccessPage />} />
+            <Route path="/failure" element={<FailurePage />} />
+          </Route>
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
       </BrowserRouter>
       <Footer />
     </div>

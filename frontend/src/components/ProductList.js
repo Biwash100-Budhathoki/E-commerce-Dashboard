@@ -28,6 +28,7 @@ const ProductList = () => {
 
   const removeFromCart = (itemIndex) => {
     const updatedCartItems = [...cartItems];
+   // console.log('Items',updatedCartItems);
     updatedCartItems.splice(itemIndex, 1);
     setCartItems(updatedCartItems);
     calculateTotalAmount(updatedCartItems);
