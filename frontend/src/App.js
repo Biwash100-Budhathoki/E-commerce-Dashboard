@@ -13,6 +13,7 @@ import { useState } from 'react';
 import PaymentForm from "./components/eSewaForm";
 import SuccessPage from "./components/SuccessPage";
 import FailurePage from "./components/FailurePage";
+import EsewaPage from './components/eSewaPage';
 
 function App() {
 
@@ -35,6 +36,8 @@ function App() {
             <Route path="/pay" element={<PaymentForm />} />
             <Route path="/success" element={<SuccessPage />} />
             <Route path="/failure" element={<FailurePage />} />
+            <Route path="/payment" element={<EsewaPage />} />
+
           </Route>
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
