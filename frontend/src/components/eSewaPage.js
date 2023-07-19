@@ -1,15 +1,14 @@
 import React, { useEffect } from "react";
 // import dotenv from 'dotenv';
 // dotenv.config();
+import { useLocation } from "react-router-dom";
 const apiUrl = process.env.REACT_APP_API_URL;
-const queryParams = new URLSearchParams(window.location.search);
-const pid = queryParams.get('pid');
-const tAmt = queryParams.get('tAmt');
-const amt = queryParams.get('amt');
-
-
 
 const EsewaPage =() =>{
+
+  const location = useLocation();
+  const { pid, tAmt, amt } = location.state;
+  
   console.log(apiUrl);
     // const { amt, pid, tAmt, su, fu } = props.location.state.bookingData;props
       useEffect(() => {

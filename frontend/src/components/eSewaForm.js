@@ -1,31 +1,22 @@
 import React, { useState } from "react";
-import axios from "axios";
-import EsewaPage from "./eSewaPage";
+import {Navigate, useNavigate } from "react-router-dom";
 
 const PaymentForm = () => {
+  const navigate = useNavigate();
   const [product, setProduct] = useState("");
   const [amount, setAmount] = useState("");
-  //const [redirectUrl, setRedirectUrl] = useState(""); // Define the redirectUrl state variable
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // Make a request to your Node.js server to initiate the payment
-      // const response = await axios.post("http://127.0.0.1:5000/payment/initiate", {
-      //   product,
-      //   amount,
-      // });
-      //console.log(redirectUrl);
-      //console.log('Response is: ',response);
-
       // Redirect the user to the eSewa login page
-
-      const url = `/payment?pid=${product}&tAmt=${amount}&amt=${amount}`;
-      window.location.href = url;
-
-      //window.location.href = response.data.redirectUrl;
+      const state = {
+        pid: product,
+        tAmt: amount,
+        amt: amount
+      };
+      navigate("/payment", { state });
     } catch (error) {
       console.log("Error initiating payment:", error);
     }
