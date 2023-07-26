@@ -8,6 +8,11 @@ const Jwt = require("jsonwebtoken");
 const jwtKey = 'biwash10';
 const app = express();
 
+//const cors = require('cors');
+const Transaction = require('./db/transactionConfig');
+
+
+
 const axios = require("axios");
 
 
@@ -132,32 +137,72 @@ function verifyToken(req, resp, next) {
 
 };
   
-// Handle payment initiation
-app.post("/payment/initiate", async (req, res) => {
+app.post('/payment/initiate', async (req, res) => {
   try {
-    // Perform necessary calculations and validations
+    const { amount } = req.body;
 
     // Make a request to eSewa to initiate the payment
-    const response = await axios.post(
-      "https://uat.esewa.com.np/epay/main",
-      {
-        amt: req.body.amount,
-        tAmt: req.body.amount,
-        pid: "TEST_PRODUCT",
-        scd: "EPAYTEST",
-        su: "http://localhost:5000/success",
-        fu: "http://localhost:5000/failure",
-      }
-    );
+    const response = await axios.post('https://uat.esewa.com.np/epay/main', {
+      amt: amount,
+      tAmt: amount,
+      pid: 'TEST_PRODUCT',
+      scd: 'EPAYTEST',
+      su: 'http://localhost:5000/payment/success',
+      fu: 'http://localhost:5000/payment/failure',
+    });
 
     // Extract the redirect URL from the response and send it to the client
     const redirectUrl = response.request.res.responseUrl;
     res.json({ redirectUrl });
   } catch (error) {
-    console.log("Error initiating payment:", error);
-    res.status(500).json({ error: "Payment initiation failed" });
+    console.log('Error initiating payment:', error);
+    res.status(500).json({ error: 'Payment initiation failed' });
   }
 });
+
+// Route to capture payment success
+app.post('/payment/success', async (req, res) => {
+  try {
+    const { transactionId, amount } = req.body;
+
+    // Save the successful transaction to the database
+    const transaction = new Transaction({
+      transactionId,
+      amount,
+      status: 'success',
+    });
+
+    await transaction.save();
+
+    res.status(200).json({ message: 'Payment success recorded' });
+  } catch (error) {
+    console.log('Error recording payment success:', error);
+    res.status(500).json({ error: 'Failed to record payment success' });
+  }
+});
+
+// Route to capture payment failure
+app.post('/payment/failure', async (req, res) => {
+  try {
+    const { transactionId, amount } = req.body;
+
+    // Save the failed transaction to the database
+    const transaction = new Transaction({
+      transactionId,
+      amount,
+      status: 'failure',
+    });
+
+    await transaction.save();
+
+    res.status(200).json({ message: 'Payment failure recorded' });
+  } catch (error) {
+    console.log('Error recording payment failure:', error);
+    res.status(500).json({ error: 'Failed to record payment failure' });
+  }
+});
+
+
 
 
 app.listen(5000, () => {
