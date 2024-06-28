@@ -141,7 +141,7 @@ const ProductList = () => {
       </div>
 
       <div className="total-amount">
-        <h3>Total Amount: ${totalAmount}</h3>
+        <h3>Total Amount: Rs. {totalAmount}</h3>
         <button onClick={handlePayment}>Pay</button>
       </div>
     </div>

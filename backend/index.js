@@ -181,6 +181,11 @@ app.post('/payment/success', async (req, res) => {
   }
 });
 
+app.get('/payment/success', (req, res) => {
+  // Handle the request. For example, render a success page or send a response.
+  res.send('Payment successful!');
+});
+
 // Route to capture payment failure
 app.post('/payment/failure', async (req, res) => {
   try {
