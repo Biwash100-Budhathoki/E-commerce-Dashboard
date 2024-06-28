@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [cartId, setCartId] = useState(''); // State to store cart ID
+
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     getProducts();
+    if (!cartId) {
+      setCartId(uuidv4()); // Generate a unique ID for the cart
+    }
   }, []);
 
   const getProducts = async () => {
@@ -62,6 +71,10 @@ const ProductList = () => {
     } else {
       getProducts();
     }
+  };
+
+  const handlePayment = () => {
+    navigate('/pay', { state: { pid: cartId, tAmt: totalAmount, amt: totalAmount } });
   };
 
   return (
@@ -119,7 +132,10 @@ const ProductList = () => {
 
       <div className="total-amount">
         <h3>Total Amount: ${totalAmount}</h3>
+        <button onClick={handlePayment}>Pay</button>
       </div>
+
+
     </div>
   );
 };

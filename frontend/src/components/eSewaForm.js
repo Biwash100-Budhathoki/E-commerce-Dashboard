@@ -1,10 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {Navigate, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+
 
 const PaymentForm = () => {
   const navigate = useNavigate();
+  const location = useLocation(); // To access the passed state
   const [product, setProduct] = useState("");
   const [amount, setAmount] = useState("");
+
+  useEffect(() => {
+    if (location.state) {
+      setProduct(location.state.pid);
+      setAmount(location.state.tAmt);
+    }
+  }, [location.state]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
