@@ -8,11 +8,13 @@ const PaymentForm = () => {
   const location = useLocation(); // To access the passed state
   const [product, setProduct] = useState("");
   const [amount, setAmount] = useState("");
+  const [items, setItems] = useState([])
 
   useEffect(() => {
     if (location.state) {
       setProduct(location.state.pid);
       setAmount(location.state.tAmt);
+      setItems(location.state.items);
     }
   }, [location.state]);
 
@@ -35,6 +37,19 @@ const PaymentForm = () => {
   return (
     <div>
       <h2>Payment Form</h2>
+      <br />
+      {items.length > 0 ? (
+          <ul>
+            {items.map((item, index) => (
+              <li key={index}>
+{item.name} --{`>`} Rs.{' '}
+                {item.price}{' '}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No items in the cart.</p>
+        )}
       <form onSubmit={handleSubmit}>
         <label>Product:</label>
         <input

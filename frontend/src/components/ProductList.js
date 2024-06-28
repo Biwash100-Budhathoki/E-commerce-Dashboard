@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
-import { Navigate, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
+import { Navigate, useNavigate } from "react-router-dom";
+import { set } from "mongoose";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
-  const [cartId, setCartId] = useState(''); // State to store cart ID
-
+  const [cartId, setCartId] = useState(""); // State to store cart ID
 
   const navigate = useNavigate();
 
@@ -20,9 +20,9 @@ const ProductList = () => {
   }, []);
 
   const getProducts = async () => {
-    let result = await fetch('http://127.0.0.1:5000/products', {
+    let result = await fetch("http://127.0.0.1:5000/products", {
       headers: {
-        authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`,
+        authorization: `bearer ${JSON.parse(localStorage.getItem("token"))}`,
       },
     });
     result = await result.json();
@@ -32,13 +32,16 @@ const ProductList = () => {
   const addToCart = (product) => {
     const updatedCartItems = [...cartItems, product];
     setCartItems(updatedCartItems);
+    
+    product.number = product.number - 1;
     calculateTotalAmount(updatedCartItems);
   };
 
-  const removeFromCart = (itemIndex) => {
+  const removeFromCart = (itemIndex, item) => {
     const updatedCartItems = [...cartItems];
-   // console.log('Items',updatedCartItems);
+    // console.log('Items',updatedCartItems);
     updatedCartItems.splice(itemIndex, 1);
+    item.number = item.number + 1;
     setCartItems(updatedCartItems);
     calculateTotalAmount(updatedCartItems);
   };
@@ -61,7 +64,7 @@ const ProductList = () => {
     if (key) {
       let result = await fetch(`http://127.0.0.1:5000/search/${key}`, {
         headers: {
-          authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`,
+          authorization: `bearer ${JSON.parse(localStorage.getItem("token"))}`,
         },
       });
       result = await result.json();
@@ -74,7 +77,14 @@ const ProductList = () => {
   };
 
   const handlePayment = () => {
-    navigate('/pay', { state: { pid: cartId, tAmt: totalAmount, amt: totalAmount } });
+    navigate("/pay", {
+      state: {
+        pid: cartId,
+        tAmt: totalAmount,
+        amt: totalAmount,
+        items: cartItems,
+      },
+    });
   };
 
   return (
@@ -100,7 +110,7 @@ const ProductList = () => {
           <ul key={item._id}>
             <li>{index + 1}</li>
             <li>{item.name}</li>
-            <li>${item.price}</li>
+            <li>Rs. {item.price}</li>
             <li>{item.category}</li>
             <li>{item.number}</li>
             <li>
@@ -119,8 +129,8 @@ const ProductList = () => {
           <ul>
             {cartItems.map((item, index) => (
               <li key={index}>
-                {item.name}{' '}
-                <button onClick={() => removeFromCart(index)}>Remove</button>
+                {item.name}{" "}
+                <button onClick={() => removeFromCart(index, item)}>Remove</button>
               </li>
             ))}
           </ul>
@@ -134,8 +144,6 @@ const ProductList = () => {
         <h3>Total Amount: ${totalAmount}</h3>
         <button onClick={handlePayment}>Pay</button>
       </div>
-
-
     </div>
   );
 };
