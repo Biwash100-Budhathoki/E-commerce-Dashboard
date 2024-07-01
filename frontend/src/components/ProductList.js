@@ -2,13 +2,23 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+import { addToCart, removeFromCart, clearCart } from '../redux/cart/cartSlice';
 import { set } from "mongoose";
 
+ 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
-  const [cartItems, setCartItems] = useState([]);
-  const [totalAmount, setTotalAmount] = useState(0);
+  // const [cartItems, setCartItems] = useState([]);
+  const [totalAmountt, setTotalAmountt] = useState(0);
   const [cartId, setCartId] = useState(""); // State to store cart ID
+
+  const cartItems = useSelector((state) => state.cart.items);
+  const totalAmount = useSelector((state) => state.cart.totalAmount);
+
+  const dispatch = useDispatch();
+
+
 
   const navigate = useNavigate();
 
@@ -29,35 +39,42 @@ const ProductList = () => {
     setProducts(result);
   };
 
-  const addToCart = (product) => {
-    const updatedCartItems = [...cartItems, product];
-    setCartItems(updatedCartItems);
+  const addToCartt = (product) => {
+    // const updatedCartItems = [...cartItems, product];
+    // setCartItems(updatedCartItems);
+    // product.number = product.number - 1;
+
+    dispatch(addToCart(product));
     
-    product.number = product.number - 1;
-    calculateTotalAmount(updatedCartItems);
+    // product.number = product.number - 1;
+    // calculateTotalAmount(updatedCartItems);
   };
 
-  const removeFromCart = (itemIndex, item) => {
-    const updatedCartItems = [...cartItems];
+  const removeFromCartt = (itemIndex, item) => {
+    // const updatedCartItems = [...cartItemss];
     // console.log('Items',updatedCartItems);
-    updatedCartItems.splice(itemIndex, 1);
-    item.number = item.number + 1;
-    setCartItems(updatedCartItems);
-    calculateTotalAmount(updatedCartItems);
+    // updatedCartItems.splice(itemIndex, 1);
+    // item.number = item.number + 1;
+    dispatch(removeFromCart( {itemIndex, item}));
+    
+    // setCartItems(updatedCartItems);
+    // calculateTotalAmount(updatedCartItems);
   };
 
-  const clearCart = () => {
-    setCartItems([]);
-    setTotalAmount(0);
+  const clearCartt = () => {
+    // setCartItems([]);
+    // setTotalAmount(0);
+    dispatch(clearCart());
+
   };
 
-  const calculateTotalAmount = (cartItems) => {
-    let total = 0;
-    cartItems.forEach((item) => {
-      total += parseFloat(item.price);
-    });
-    setTotalAmount(total);
-  };
+  // const calculateTotalAmount = (cartItems) => {
+  //   let total = 0;
+  //   cartItems.forEach((item) => {
+  //     total += parseFloat(item.price);
+  //   });
+  //   setTotalAmountt(total);
+  // };
 
   const searchHandle = async (event) => {
     let key = event.target.value;
@@ -114,7 +131,7 @@ const ProductList = () => {
             <li>{item.category}</li>
             <li>{item.number}</li>
             <li>
-              <button onClick={() => addToCart(item)}>Add to Cart</button>
+              <button onClick={() => addToCartt(item)}>Add to Cart</button>
               <Link to={`/update/${item._id}`}>Update</Link>
             </li>
           </ul>
@@ -130,14 +147,14 @@ const ProductList = () => {
             {cartItems.map((item, index) => (
               <li key={index}>
                 {item.name}{" "}
-                <button onClick={() => removeFromCart(index, item)}>Remove</button>
+                <button onClick={() => removeFromCartt(index, item)}>Remove</button>
               </li>
             ))}
           </ul>
         ) : (
           <p>No items in the cart.</p>
         )}
-        <button onClick={clearCart}>Clear Cart</button>
+        <button onClick={clearCartt}>Clear Cart</button>
       </div>
 
       <div className="total-amount">

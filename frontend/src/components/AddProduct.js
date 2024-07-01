@@ -44,7 +44,7 @@ const AddProduct =()=>{
 
            {error && !name && <span className='invalid-input'>Enter valid name</span>}
 
-            <input type="text"  placeholder='Enter Product Price' className='inputBox'
+            <input type="number"  placeholder='Enter Product Price' className='inputBox'
             onChange={(e)=>{setPrice(e.target.value)}} value={price}/>
                        {error && !price && <span className='invalid-input'>Enter valid price</span>}
 
